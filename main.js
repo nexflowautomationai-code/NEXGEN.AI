@@ -1,63 +1,98 @@
-console.log("🔥 Nexgen JS Loaded – Production Stable");
+/* =====================================================
+   NexGen Automation – Production JavaScript
+   Stable | Mobile-Friendly | Formspree Compatible
+===================================================== */
 
-/* ===============================
-   MOBILE MENU
-================================ */
-const hamburger = document.getElementById("hamburger");
-const navMenu = document.getElementById("navMenu");
+console.log("🔥 NexGen JS Loaded – Production Stable");
 
-if (hamburger && navMenu) {
-  hamburger.addEventListener("click", () => {
-    navMenu.style.display =
-      navMenu.style.display === "flex" ? "none" : "flex";
+/* =====================================================
+   MOBILE NAVIGATION TOGGLE
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("navMenu");
+
+  if (hamburger && navMenu) {
+    hamburger.addEventListener("click", () => {
+      navMenu.classList.toggle("active");
+    });
+
+    // Close menu when link is clicked (mobile UX)
+    const navLinks = navMenu.querySelectorAll("a");
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        navMenu.classList.remove("active");
+      });
+    });
+  }
+});
+
+/* =====================================================
+   SMOOTH SCROLL FOR NAV BUTTONS
+===================================================== */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function (e) {
+    const targetId = this.getAttribute("href");
+    const targetEl = document.querySelector(targetId);
+
+    if (targetEl) {
+      e.preventDefault();
+      targetEl.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
   });
-}
+});
 
-/* ===============================
+/* =====================================================
    SCROLL REVEAL ANIMATION
-================================ */
-const reveals = document.querySelectorAll(".reveal");
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const reveals = document.querySelectorAll(".reveal");
 
-if (reveals.length > 0) {
+  if (!reveals.length) return;
+
   const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
+    entries => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = "1";
-          entry.target.style.transform = "translateY(0)";
+          entry.target.classList.add("reveal-active");
+          observer.unobserve(entry.target);
         }
       });
     },
     { threshold: 0.2 }
   );
 
-  reveals.forEach((el) => {
-    el.style.opacity = "0";
-    el.style.transform = "translateY(30px)";
-    observer.observe(el);
-  });
-}
+  reveals.forEach(el => observer.observe(el));
+});
 
-/* ===============================
+/* =====================================================
    COUNTER ANIMATION
-================================ */
-const counters = document.querySelectorAll(".counter");
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  const counters = document.querySelectorAll(".counter");
 
-if (counters.length > 0) {
+  if (!counters.length) return;
+
   const counterObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
+    entries => {
+      entries.forEach(entry => {
         if (!entry.isIntersecting) return;
 
         const el = entry.target;
-        const target = Number(el.dataset.target || 0);
-        let count = 0;
+        const target = parseInt(el.dataset.target, 10) || 0;
+        let current = 0;
+        const speed = Math.max(20, Math.floor(2000 / target));
 
         const interval = setInterval(() => {
-          count++;
-          el.textContent = count;
-          if (count >= target) clearInterval(interval);
-        }, 20);
+          current++;
+          el.textContent = current;
+          if (current >= target) {
+            clearInterval(interval);
+          }
+        }, speed);
 
         counterObserver.unobserve(el);
       });
@@ -65,21 +100,26 @@ if (counters.length > 0) {
     { threshold: 0.6 }
   );
 
-  counters.forEach((counter) => counterObserver.observe(counter));
-}
+  counters.forEach(counter => counterObserver.observe(counter));
+});
 
-/* ===============================
+/* =====================================================
    IMPORTANT NOTE
-================================
-   🚫 NO FORM SUBMISSION CODE HERE
+=====================================================
 
-   Contact & Consultation forms
-   are handled by Formspree via
-   pure HTML action="" attribute.
+🚫 NO FORM SUBMISSION HANDLING HERE
 
-   This ensures:
-   ✔ Mobile compatibility
-   ✔ No CORS issues
-   ✔ No double submission
-   ✔ Works on Netlify/GitHub Pages
-================================ */
+✔ Contact Form
+✔ Consultation Form
+
+These are handled via Formspree using:
+<form action="https://formspree.io/..." method="POST">
+
+BENEFITS:
+✔ No JS errors
+✔ No double submission
+✔ Mobile safe
+✔ No CORS issues
+✔ Works on Netlify / GitHub Pages
+
+===================================================== */
