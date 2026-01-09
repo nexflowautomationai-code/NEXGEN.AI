@@ -89,7 +89,7 @@ body {
     width: 100%;
     height: calc(100vh - 72px);
 
-    background: #ffffff;
+    background: #000000;
     z-index: 2000; /* 🔥 FIX: bring above everything */
 
     display: flex;
