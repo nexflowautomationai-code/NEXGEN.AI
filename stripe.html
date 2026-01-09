@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting to Secure Payment | NexGen AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(900px 500px at top, #141b2d, #070b14);
+      font-family: Inter, Arial, sans-serif;
+      color: #ffffff;
+    }
+
+    .redirect-box {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 18px;
+      padding: 42px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+    }
+
+    .redirect-box h1 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .redirect-box p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+    }
+
+    .loader {
+      margin: 28px auto 10px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top-color: #5b7cfa;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .error {
+      color: #ff7a7a;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="redirect-box" id="box">
+  <h1>Redirecting to Secure Payment</h1>
+  <p>
+    Please wait while we redirect you to Stripe’s
+    secure checkout to complete your payment.
+  </p>
+  <div class="loader"></div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const amount = Number(params.get("amount"));
+
+  // 🔒 HARD BLOCK INVALID ACCESS
+  if (!amount || amount <= 0 || isNaN(amount)) {
+    document.getElementById("box").innerHTML = `
+      <h1>Invalid Payment Request</h1>
+      <p>Please return to the pricing page and try again.</p>
+      <div class="error">Missing or invalid payment amount.</div>
+    `;
+    throw new Error("Invalid Stripe amount");
+  }
+
+  // ✅ STRIPE CHECKOUT LINK
+  // (Create one in Stripe → Products → Payment Links)
+  const STRIPE_CHECKOUT_URL =
+    "https://buy.stripe.com/TEST_CHECKOUT_LINK";
+
+  // Smooth UX delay
+  setTimeout(() => {
+    window.location.href = STRIPE_CHECKOUT_URL;
+  }, 700);
+</script>
+
+</body>
+</html>

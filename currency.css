@@ -1,0 +1,171 @@
+/* ============================================
+   NexGen AI – Premium Currency & Region Styles
+=============================================== */
+
+:root {
+  --nxg-bg-dark: #0b0f1a;
+  --nxg-glass: rgba(255, 255, 255, 0.08);
+  --nxg-glass-border: rgba(255, 255, 255, 0.18);
+  --nxg-primary: #5b7cfa;
+  --nxg-primary-glow: rgba(91, 124, 250, 0.35);
+  --nxg-text-main: #ffffff;
+  --nxg-text-muted: rgba(255, 255, 255, 0.7);
+  --nxg-radius-xl: 20px;
+  --nxg-radius-md: 12px;
+  --nxg-blur: blur(18px);
+  --nxg-transition: 0.35s ease;
+}
+
+/* ================= MODAL OVERLAY ================= */
+.nxg-region-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 12, 24, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: nxgFadeIn 0.4s ease;
+}
+
+/* ================= HIDDEN ================= */
+.nxg-hidden {
+  display: none !important;
+}
+
+/* ================= MODAL BOX ================= */
+.nxg-region-box {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.05)
+  );
+  backdrop-filter: var(--nxg-blur);
+  border: 1px solid var(--nxg-glass-border);
+  border-radius: var(--nxg-radius-xl);
+  padding: 42px 36px;
+  max-width: 420px;
+  width: 90%;
+  color: var(--nxg-text-main);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  text-align: center;
+  animation: nxgScaleIn 0.45s ease;
+}
+
+/* ================= TITLE ================= */
+.nxg-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+  margin-bottom: 12px;
+}
+
+/* ================= DESCRIPTION ================= */
+.nxg-desc {
+  font-size: 15px;
+  color: var(--nxg-text-muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* ================= OPTIONS ================= */
+.nxg-region-options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* ================= BUTTON ================= */
+.nxg-region-btn {
+  background: var(--nxg-glass);
+  border: 1px solid var(--nxg-glass-border);
+  color: var(--nxg-text-main);
+  padding: 16px 18px;
+  border-radius: var(--nxg-radius-md);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: var(--nxg-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Glow Effect */
+.nxg-region-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at top,
+    var(--nxg-primary-glow),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: var(--nxg-transition);
+}
+
+.nxg-region-btn:hover::before {
+  opacity: 1;
+}
+
+/* Hover */
+.nxg-region-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--nxg-primary);
+}
+
+/* Active */
+.nxg-region-btn:active {
+  transform: scale(0.98);
+}
+
+/* ================= NOTE ================= */
+.nxg-note {
+  margin-top: 22px;
+  font-size: 13px;
+  color: var(--nxg-text-muted);
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes nxgFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nxgScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ================= MOBILE OPTIMIZATION ================= */
+@media (max-width: 480px) {
+  .nxg-region-box {
+    padding: 32px 24px;
+  }
+
+  .nxg-title {
+    font-size: 22px;
+  }
+
+  .nxg-region-btn {
+    font-size: 15px;
+    padding: 14px;
+  }
+}
