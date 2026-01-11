@@ -1,0 +1,369 @@
+/* =====================================================
+   NexGen AI – Core Application Controller
+   Scope: Global (All Pages)
+   Environment: Production / SaaS
+===================================================== */
+
+(function () {
+  "use strict";
+
+  /* =====================================================
+     DOM REFERENCES
+     (Fail-safe: all features guard against null)
+  ===================================================== */
+  const navbar = document.getElementById("navbar");
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("navMenu");
+  const regionModal = document.getElementById("nxgRegionModal");
+
+  /* =====================================================
+     LOCAL STORAGE KEYS
+     (Centralized for maintainability)
+  ===================================================== */
+  const STORAGE = {
+    currency: "nxg_currency",
+    regionSelected: "nxg_region_selected"
+  };
+
+  /* =====================================================
+     UTILITIES
+  ===================================================== */
+
+  /**
+   * Debounce utility
+   * Prevents excessive function calls (scroll / resize)
+   */
+  function debounce(fn, delay = 80) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  /**
+   * Mobile breakpoint check
+   */
+  function isMobile() {
+    return window.innerWidth <= 900;
+  }
+
+  /* =====================================================
+     NAVBAR: STICKY BEHAVIOR
+  ===================================================== */
+  function initStickyNavbar() {
+    if (!navbar) return;
+
+    const onScroll = debounce(() => {
+      navbar.classList.toggle("navbar-sticky", window.scrollY > 40);
+    }, 40);
+
+    window.addEventListener("scroll", onScroll);
+  }
+
+  /* =====================================================
+     MOBILE NAVIGATION
+     - Single initialization guard
+     - Prevents duplicate listeners
+  ===================================================== */
+  let mobileMenuInitialized = false;
+
+  function initMobileMenu() {
+    if (!hamburger || !navMenu || mobileMenuInitialized) return;
+    mobileMenuInitialized = true;
+
+    /**
+     * Open mobile menu
+     */
+    const openMenu = () => {
+      navMenu.classList.add("nav-active");
+      hamburger.classList.add("open");
+      document.body.style.overflow = "hidden";
+    };
+
+    /**
+     * Close mobile menu
+     */
+    const closeMenu = () => {
+      navMenu.classList.remove("nav-active");
+      hamburger.classList.remove("open");
+      document.body.style.overflow = "";
+    };
+
+    /**
+     * Hamburger toggle
+     */
+    hamburger.addEventListener("click", e => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      navMenu.classList.contains("nav-active")
+        ? closeMenu()
+        : openMenu();
+    });
+
+    /**
+     * Close menu when clicking navigation links (mobile)
+     */
+    document.querySelectorAll(".nav-link").forEach(link => {
+      link.addEventListener("click", () => {
+        if (isMobile()) closeMenu();
+      });
+    });
+
+    /**
+     * Close menu on outside click
+     */
+    document.addEventListener("click", e => {
+      if (!isMobile()) return;
+      if (!navMenu.classList.contains("nav-active")) return;
+
+      if (
+        !navMenu.contains(e.target) &&
+        !hamburger.contains(e.target)
+      ) {
+        closeMenu();
+      }
+    });
+
+    /**
+     * Close menu on ESC key
+     */
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeMenu();
+    });
+
+    /**
+     * Reset menu on desktop resize
+     */
+    window.addEventListener("resize", () => {
+      if (!isMobile()) closeMenu();
+    });
+  }
+
+  /* =====================================================
+     REGION & CURRENCY ENFORCEMENT
+     (Payment compliance & UX safety)
+  ===================================================== */
+  function enforceRegionSelection() {
+    if (!regionModal) return;
+
+    const currency = localStorage.getItem(STORAGE.currency);
+    const selected = localStorage.getItem(STORAGE.regionSelected);
+
+    if (!currency || !selected) {
+      regionModal.classList.remove("nxg-hidden");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closeRegionModal() {
+    if (!regionModal) return;
+    regionModal.classList.add("nxg-hidden");
+    document.body.style.overflow = "";
+  }
+
+  /**
+   * Region selection handler
+   */
+  document.addEventListener("click", e => {
+    const btn = e.target.closest(".nxg-region-btn");
+    if (!btn) return;
+
+    localStorage.setItem(STORAGE.currency, btn.dataset.currency);
+    localStorage.setItem(STORAGE.regionSelected, "true");
+
+    closeRegionModal();
+
+    // Reload ensures currency-sensitive pricing refresh
+    setTimeout(() => location.reload(), 150);
+  });
+
+  /* =====================================================
+     INITIALIZATION
+  ===================================================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    initStickyNavbar();
+    initMobileMenu();
+    enforceRegionSelection();
+  });
+
+})();
+
+
+/* =====================================================
+   NexGen AI – Demo Page Controller
+   Scope: Demo Page Only
+===================================================== */
+
+(function () {
+  "use strict";
+
+  /* =====================================================
+     DOM REFERENCES
+  ===================================================== */
+  const navbar = document.getElementById("navbar");
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("navMenu");
+
+  const automationSelect = document.getElementById("automationType");
+  const videoWrapper = document.getElementById("videoWrapper");
+  const demoVideo = document.getElementById("demoVideo");
+
+  /* =====================================================
+     UTILITIES
+  ===================================================== */
+  function debounce(fn, delay = 80) {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  function isMobile() {
+    return window.innerWidth <= 900;
+  }
+
+  /* =====================================================
+     STICKY NAVBAR (DEMO PAGE)
+  ===================================================== */
+  function initStickyNavbar() {
+    if (!navbar) return;
+
+    const onScroll = debounce(() => {
+      navbar.classList.toggle("navbar-sticky", window.scrollY > 40);
+    }, 40);
+
+    window.addEventListener("scroll", onScroll);
+  }
+
+  /* =====================================================
+     MOBILE NAV (DEMO PAGE)
+  ===================================================== */
+  function initMobileMenu() {
+    if (!hamburger || !navMenu) return;
+
+    hamburger.addEventListener("click", e => {
+      e.stopPropagation();
+
+      navMenu.classList.toggle("nav-active");
+      hamburger.classList.toggle("open");
+
+      document.body.style.overflow =
+        navMenu.classList.contains("nav-active") ? "hidden" : "";
+    });
+
+    document.addEventListener("click", () => {
+      if (!isMobile()) return;
+
+      navMenu.classList.remove("nav-active");
+      hamburger.classList.remove("open");
+      document.body.style.overflow = "";
+    });
+  }
+
+  /* =====================================================
+     DEMO VIDEO SWITCHER
+  ===================================================== */
+function initDemoAutomation() {
+  const automationSelect = document.getElementById("automationType");
+  const demoVideo = document.getElementById("demoVideo");
+  const demoImage = document.getElementById("demoImage");
+  const mediaWrapper = document.getElementById("mediaWrapper");
+
+  if (!automationSelect || !demoImage || !mediaWrapper) {
+    console.error("Demo elements missing");
+    return;
+  }
+
+  const demoMedia = {
+  whatsapp: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_1",
+    image: "/public/images/flowcharts/whatsapp-flowchart.png.png"
+  },
+
+  website: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_2",
+    image: "images/flowcharts/website-flowchart.png.png"
+  },
+
+  crm: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_3",
+    image: "images/flowcharts/crm-flowchart.png.png"
+  },
+
+  sales: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_4",
+    image: "images/flowcharts/sales-flowchart.png.png"
+  },
+
+  marketing: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_5",
+    image: "images/flowcharts/marketing-flowchart.png.png"
+  },
+
+  ads: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_6",
+    image: "images/flowcharts/ads-flowchart.png.png"
+  },
+
+  support: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_7",
+    image: "images/flowcharts/support-flowchart.png.png"
+  },
+
+  orders: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_8",
+    image: "images/flowcharts/orders-flowchart.png.png"
+  },
+
+  payments: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_9",
+    image: "images/flowcharts/payments-flowchart.png.png"
+  },
+
+  custom: {
+    video: "https://www.youtube.com/embed/VIDEO_ID_10",
+    image: "images/flowcharts/custom-flowchart.png.png"
+  }
+};
+
+
+  automationSelect.addEventListener("change", () => {
+    const selected = automationSelect.value;
+    const media = demoMedia[selected];
+
+    if (!media) {
+      mediaWrapper.style.display = "none";
+      demoVideo.src = "";
+      demoImage.src = "";
+      return;
+    }
+
+    // Show wrapper
+    mediaWrapper.style.display = "grid";
+
+    // Set video
+    demoVideo.src = media.video;
+
+    // Set image
+    demoImage.src = media.image;
+
+    console.log("Loaded image:", demoImage.src);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initDemoAutomation);
+
+
+  /* =====================================================
+     INITIALIZATION
+  ===================================================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    initStickyNavbar();
+    initMobileMenu();
+    initDemoAutomation();
+  });
+
+})();
