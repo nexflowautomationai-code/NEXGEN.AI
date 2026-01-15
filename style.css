@@ -816,6 +816,49 @@ textarea {
 }
 
 
+/* === FORCE HAMBURGER VISIBILITY (DEBUG) === */
+.hamburger {
+  display: flex !important;
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(255, 0, 0, 0.2) !important;
+  position: relative !important;
+  z-index: 999999 !important;
+}
+
+.hamburger span {
+  background: #ffffff !important;
+}
+.hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+
+  cursor: pointer;
+  position: relative;
+  z-index: 1100;
+}
+
+.hamburger span {
+  width: 26px;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+@media (max-width: 900px) {
+  .hamburger {
+    display: flex;
+  }
+}
+
+
 
 /* =====================================================
    END OF NAVBAR STYLES
