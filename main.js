@@ -142,52 +142,7 @@
     }, 150);
   });
 
-  /* =====================================================
-     INITIALIZATION
-  ===================================================== */
-  document.addEventListener("DOMContentLoaded", function () {
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.getElementById("navMenu");
-
-  if (!hamburger || !navMenu) return;
-
-  function openMenu() {
-    hamburger.classList.add("open");
-    navMenu.classList.add("nav-active");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeMenu() {
-    hamburger.classList.remove("open");
-    navMenu.classList.remove("nav-active");
-    document.body.style.overflow = "";
-  }
-
-  hamburger.addEventListener("click", function (e) {
-    e.stopPropagation();
-    navMenu.classList.contains("nav-active")
-      ? closeMenu()
-      : openMenu();
-  });
-
-  document.querySelectorAll(".nav-link").forEach(link => {
-    link.addEventListener("click", closeMenu);
-  });
-
-  document.addEventListener("click", function (e) {
-    if (
-      navMenu.classList.contains("nav-active") &&
-      !navMenu.contains(e.target) &&
-      !hamburger.contains(e.target)
-    ) {
-      closeMenu();
-    }
-  });
-
-  window.addEventListener("resize", function () {
-    if (window.innerWidth > 900) closeMenu();
-  });
-});
+  
 
 
 
