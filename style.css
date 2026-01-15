@@ -694,7 +694,6 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative; /* required for mobile dropdown */
 }
 
 
@@ -715,9 +714,16 @@ textarea {
 }
 
 
-/* =====================================================
-   3. DESKTOP NAVIGATION
-===================================================== */
+/* ===============================
+   DESKTOP (DEFAULT – NO CHANGE)
+=============================== */
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* REQUIRED for mobile dropdown */
+}
 
 .nav-menu {
   display: flex;
@@ -725,39 +731,9 @@ textarea {
   gap: var(--space-7);
 }
 
-.nav-link {
-  position: relative;
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--color-text-700);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-.nav-link:hover {
-  color: var(--color-primary-900);
-}
-
-/* underline animation */
-.nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  width: 0;
-  height: 2px;
-  background: var(--color-primary-700);
-  transition: width var(--transition-fast);
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
-
-
-/* =====================================================
-   4. HAMBURGER BUTTON
-===================================================== */
+/* ===============================
+   HAMBURGER
+=============================== */
 
 .hamburger {
   display: none;
@@ -770,60 +746,58 @@ textarea {
   gap: 5px;
 
   cursor: pointer;
-  z-index: calc(var(--z-header) + 2);
 }
 
 .hamburger span {
-  display: block;
   width: 26px;
   height: 3px;
   background: var(--color-primary-900);
   border-radius: 3px;
-  transition: transform 0.35s ease, opacity 0.25s ease;
+  transition: transform 0.3s ease, opacity 0.2s ease;
 }
 
 /* X animation */
 .hamburger.open span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
-
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
-
 .hamburger.open span:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-
-/* =====================================================
-   5. MOBILE INLINE NAVIGATION (NOT DRAWER)
-===================================================== */
+/* ===============================
+   MOBILE INLINE MENU
+=============================== */
 
 @media (max-width: 900px) {
 
+  /* show hamburger */
   .hamburger {
     display: flex;
   }
 
+  /* hide menu by default */
   .nav-menu {
     position: absolute;
-    top: 72px;
+    top: 72px; /* navbar height */
     left: 0;
     width: 100%;
 
-    background: #ffffff;
-    border-top: 1px solid var(--color-border-300);
+    display: none;
 
     flex-direction: column;
     align-items: center;
     gap: var(--space-6);
 
-    padding: var(--space-7) 0;
+    padding: var(--space-6) 0;
 
-    display: none;
+    background: #ffffff;
+    border-top: 1px solid var(--color-border-300);
   }
 
+  /* show when active */
   .nav-menu.nav-active {
     display: flex;
   }
@@ -831,30 +805,11 @@ textarea {
   .nav-link {
     font-size: 18px;
     font-weight: 600;
-    color: var(--color-primary-900);
   }
-
-  .nav-link::after {
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: -6px;
-  }
-}
-
-
-/* =====================================================
-   6. STICKY STATE
-===================================================== */
-
-.navbar-sticky {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(8px);
-  box-shadow: var(--shadow-sm);
 }
 
 /* =====================================================
    END OF NAVBAR STYLES
-===================================================== */
 
 
 /* =====================================================
