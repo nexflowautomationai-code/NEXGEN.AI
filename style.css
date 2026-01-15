@@ -831,6 +831,8 @@ textarea {
   }
 }
 
+.hamburger span { background: #ffffff; }
+
 /* =====================================================
    END OF NAVBAR STYLES
 

@@ -303,3 +303,53 @@ function closeConsultNotice() {
   document.getElementById("consultNotice").classList.add("hidden");
   localStorage.setItem("consultNoticeSeen", "true");
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("navMenu");
+
+  if (!hamburger || !navMenu) {
+    console.warn("Hamburger or navMenu not found");
+    return;
+  }
+
+  function openMenu() {
+    hamburger.classList.add("open");
+    navMenu.classList.add("nav-active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    hamburger.classList.remove("open");
+    navMenu.classList.remove("nav-active");
+    document.body.style.overflow = "";
+  }
+
+  hamburger.addEventListener("click", function (e) {
+    e.stopPropagation();
+
+    if (navMenu.classList.contains("nav-active")) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // Close when clicking outside
+  document.addEventListener("click", function (e) {
+    if (
+      navMenu.classList.contains("nav-active") &&
+      !navMenu.contains(e.target) &&
+      !hamburger.contains(e.target)
+    ) {
+      closeMenu();
+    }
+  });
+
+  // Close on ESC
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeMenu();
+  });
+
+});
