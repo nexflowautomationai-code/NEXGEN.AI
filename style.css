@@ -663,31 +663,16 @@ textarea {
 
 
 /* =====================================================
-   NexGen AI – NAVBAR SYSTEM
-   File: 04-navbar.css
-   Depends on:
-   - 02-variables.css
-   - 03-base.css
+   NEXGEN AI – PREMIUM NAVBAR (FINAL)
 ===================================================== */
-
-/* =====================================================
-   NexGen AI – NAVBAR (FINAL / PREMIUM)
-   Compatible with existing HTML & JS
-===================================================== */
-
-/* ================= NAVBAR SHELL ================= */
 
 .navbar {
   position: sticky;
   top: 0;
-  width: 100%;
   height: 72px;
   background: #ffffff;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   z-index: 1000;
-
-  /* 🔥 CRITICAL: allow mobile menu to escape */
-  overflow: visible;
 }
 
 .nav-container {
@@ -699,45 +684,40 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  overflow: visible;
 }
 
-/* ================= BRAND ================= */
+/* ---------- LOGO ---------- */
 
 .logo {
-  font-family: "Montserrat", system-ui, sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: #012a2d;
-  white-space: nowrap;
 }
 
 .logo span {
   color: #03444a;
 }
 
-/* ================= DESKTOP NAV ================= */
+/* ---------- DESKTOP MENU ---------- */
 
 .nav-menu {
   display: flex;
-  align-items: center;
   gap: 32px;
+  align-items: center;
 }
 
 .nav-link {
-  position: relative;
   font-size: 14.5px;
   font-weight: 500;
   color: #334155;
-  transition: color 0.25s ease;
+  position: relative;
 }
 
 .nav-link:hover {
   color: #012a2d;
 }
 
-/* underline animation */
 .nav-link::after {
   content: "";
   position: absolute;
@@ -753,20 +733,17 @@ textarea {
   width: 100%;
 }
 
-/* ================= HAMBURGER ================= */
+/* ---------- HAMBURGER ---------- */
 
 .hamburger {
   display: none;
   width: 44px;
   height: 44px;
-
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 6px;
-
   cursor: pointer;
-  position: relative;
   z-index: 1400;
 }
 
@@ -775,35 +752,28 @@ textarea {
   height: 3px;
   background: #012a2d;
   border-radius: 3px;
-
-  transition:
-    transform 0.35s ease,
-    opacity 0.25s ease;
+  transition: transform 0.35s ease, opacity 0.25s ease;
 }
 
 /* X animation */
 .hamburger.open span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
-
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
-
 .hamburger.open span:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-/* ================= MOBILE MENU ================= */
+/* ---------- MOBILE MENU ---------- */
 
 @media (max-width: 900px) {
 
-  /* show hamburger */
   .hamburger {
     display: flex;
   }
 
-  /* mobile drawer */
   .nav-menu {
     position: fixed;
     top: 0;
@@ -816,7 +786,6 @@ textarea {
     background: #ffffff;
     box-shadow: -24px 0 60px rgba(1, 42, 45, 0.25);
 
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -824,30 +793,14 @@ textarea {
 
     transform: translateX(100%);
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-
-    z-index: 1300;
   }
 
-  /* active state */
   .nav-menu.nav-active {
     transform: translateX(0);
   }
 }
-
-/* ================= DESKTOP RESET ================= */
-
-@media (min-width: 901px) {
-  .nav-menu {
-    position: static;
-    height: auto;
-    width: auto;
-    transform: none;
-    box-shadow: none;
-  }
-}
 /* =====================================================
    END OF NAVBAR STYLES
-
 /* =====================================================
    NexGen AI – HERO SECTION
    File: 05-hero.css
