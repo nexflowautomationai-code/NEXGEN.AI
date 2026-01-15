@@ -755,35 +755,29 @@ textarea {
 
 
 /* =====================================================
-   4. HAMBURGER BUTTON (PREMIUM – DARK GREEN)
+   HAMBURGER BUTTON (PREMIUM – DARK GREEN)
 ===================================================== */
 
 .hamburger {
   display: none;
   width: 44px;
   height: 44px;
-  min-width: 44px;
-  min-height: 44px;
-
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 5px;
-
   cursor: pointer;
   z-index: calc(var(--z-header) + 2);
 }
 
 .hamburger span {
-  display: block;
   width: 26px;
   height: 3px;
-  background: #012a2d; /* ✅ corrected */
+  background: #012a2d;
   border-radius: 3px;
   transition: transform 0.35s ease, opacity 0.25s ease;
 }
 
-/* X animation */
 .hamburger.open span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
@@ -796,16 +790,47 @@ textarea {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-
-/* =====================================================
-   6. STICKY STATE (JS ADDS CLASS)
-===================================================== */
-
-.navbar-sticky {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(8px);
-  box-shadow: var(--shadow-sm);
+/* show only on mobile */
+@media (max-width: 900px) {
+  .hamburger {
+    display: flex;
+  }
 }
+
+@media (max-width: 900px) {
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 86%;
+    max-width: 360px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: -18px 0 60px rgba(1, 42, 45, 0.25);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: var(--z-overlay);
+  }
+
+  .nav-menu.nav-active {
+    transform: translateX(0);
+  }
+
+  .nav-link {
+    font-size: 18px;
+    font-weight: 600;
+    color: #012a2d;
+  }
+}
+
 /* =====================================================
    END OF NAVBAR STYLES
 
