@@ -353,3 +353,68 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const hamburger = document.getElementById("hamburger");
+  const navMenu = document.getElementById("navMenu");
+
+  if (!hamburger || !navMenu) {
+    console.error("Hamburger or navMenu not found");
+    return;
+  }
+
+  function openMenu() {
+    hamburger.classList.add("open");
+    navMenu.classList.add("nav-active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    hamburger.classList.remove("open");
+    navMenu.classList.remove("nav-active");
+    document.body.style.overflow = "";
+  }
+
+  // Toggle on hamburger click
+  hamburger.addEventListener("click", function (e) {
+    e.stopPropagation();
+    navMenu.classList.contains("nav-active")
+      ? closeMenu()
+      : openMenu();
+  });
+
+  // Close when clicking a nav link (mobile)
+  document.querySelectorAll(".nav-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      if (window.innerWidth <= 900) {
+        closeMenu();
+      }
+    });
+  });
+
+  // Close on outside click
+  document.addEventListener("click", function (e) {
+    if (
+      window.innerWidth <= 900 &&
+      navMenu.classList.contains("nav-active") &&
+      !navMenu.contains(e.target) &&
+      !hamburger.contains(e.target)
+    ) {
+      closeMenu();
+    }
+  });
+
+  // Close on ESC
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Reset when switching to desktop
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 900) {
+      closeMenu();
+  }
+});
+
+});
