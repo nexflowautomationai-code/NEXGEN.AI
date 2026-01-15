@@ -670,71 +670,71 @@ textarea {
    - 03-base.css
 ===================================================== */
 
-
 /* =====================================================
-   1. NAVBAR SHELL
+   NexGen AI – NAVBAR (FINAL / PREMIUM)
+   Compatible with existing HTML & JS
 ===================================================== */
+
+/* ================= NAVBAR SHELL ================= */
 
 .navbar {
   position: sticky;
   top: 0;
   width: 100%;
   height: 72px;
-  background: var(--color-bg-50);
-  border-bottom: 1px solid var(--color-border-300);
-  z-index: var(--z-header);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  z-index: 1000;
+
+  /* 🔥 CRITICAL: allow mobile menu to escape */
+  overflow: visible;
 }
 
 .nav-container {
   max-width: 1300px;
   margin: 0 auto;
   height: 72px;
-  padding: 0 var(--space-6);
+  padding: 0 24px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  overflow: visible;
 }
 
-
-/* =====================================================
-   2. BRAND / LOGO
-===================================================== */
+/* ================= BRAND ================= */
 
 .logo {
-  font-family: var(--font-heading);
+  font-family: "Montserrat", system-ui, sans-serif;
   font-size: 22px;
-  font-weight: var(--font-bold);
-  color: var(--color-primary-900);
+  font-weight: 700;
+  color: #012a2d;
   white-space: nowrap;
 }
 
 .logo span {
-  color: var(--color-primary-700);
+  color: #03444a;
 }
 
-
-/* =====================================================
-   3. DESKTOP NAVIGATION
-===================================================== */
+/* ================= DESKTOP NAV ================= */
 
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: var(--space-7);
+  gap: 32px;
 }
 
 .nav-link {
   position: relative;
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  color: var(--color-text-700);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #334155;
+  transition: color 0.25s ease;
 }
 
 .nav-link:hover {
-  color: var(--color-primary-900);
+  color: #012a2d;
 }
 
 /* underline animation */
@@ -745,30 +745,29 @@ textarea {
   bottom: -8px;
   width: 0;
   height: 2px;
-  background: var(--color-primary-700);
-  transition: width var(--transition-fast);
+  background: #012a2d;
+  transition: width 0.25s ease;
 }
 
 .nav-link:hover::after {
   width: 100%;
 }
 
-
-/* ================= HAMBURGER (FINAL) ================= */
+/* ================= HAMBURGER ================= */
 
 .hamburger {
   display: none;
   width: 44px;
   height: 44px;
 
-  position: relative;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
 
   cursor: pointer;
-  z-index: 1200;
+  position: relative;
+  z-index: 1400;
 }
 
 .hamburger span {
@@ -776,37 +775,46 @@ textarea {
   height: 3px;
   background: #012a2d;
   border-radius: 3px;
-  transition: transform 0.35s ease, opacity 0.25s ease;
+
+  transition:
+    transform 0.35s ease,
+    opacity 0.25s ease;
 }
 
 /* X animation */
 .hamburger.open span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
+
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
+
 .hamburger.open span:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-/* Mobile only */
+/* ================= MOBILE MENU ================= */
+
 @media (max-width: 900px) {
+
+  /* show hamburger */
   .hamburger {
     display: flex;
   }
 
+  /* mobile drawer */
   .nav-menu {
     position: fixed;
     top: 0;
     right: 0;
 
-    width: 86%;
+    width: 85%;
     max-width: 360px;
     height: 100vh;
 
     background: #ffffff;
-    box-shadow: -18px 0 60px rgba(1, 42, 45, 0.25);
+    box-shadow: -24px 0 60px rgba(1, 42, 45, 0.25);
 
     display: flex;
     flex-direction: column;
@@ -817,31 +825,28 @@ textarea {
     transform: translateX(100%);
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 
-    z-index: 1100;
+    z-index: 1300;
   }
 
+  /* active state */
   .nav-menu.nav-active {
     transform: translateX(0);
   }
 }
 
-/* Desktop reset (VERY IMPORTANT) */
+/* ================= DESKTOP RESET ================= */
+
 @media (min-width: 901px) {
   .nav-menu {
     position: static;
-    transform: none;
     height: auto;
     width: auto;
+    transform: none;
     box-shadow: none;
   }
 }
-
-
-
-
 /* =====================================================
    END OF NAVBAR STYLES
-
 
 /* =====================================================
    NexGen AI – HERO SECTION
