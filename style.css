@@ -3491,3 +3491,872 @@ section {
   color: #fbbf24;
 }
 
+
+
+
+/* =====================================================
+   NexGen AI – CSS RESET
+   File: 01-reset.css
+   Scope: Global (All Pages)
+   Purpose:
+   - Normalize browser inconsistencies
+   - Prevent layout bugs
+   - Create a predictable foundation
+===================================================== */
+
+/* =====================================================
+   1. UNIVERSAL RESET
+===================================================== */
+
+/*
+  Remove default margin & padding
+  Enforce consistent box model
+*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   2. HTML & BODY NORMALIZATION
+===================================================== */
+
+/*
+  Prevent horizontal overflow bugs
+  Improve text rendering
+*/
+html {
+  width: 100%;
+  height: 100%;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
+
+  /* Typography baseline */
+  font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+
+  /* Color safety */
+  color: #0f172a;
+  background-color: #ffffff;
+
+  /* Rendering improvements */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
+}
+
+/* =====================================================
+   3. MEDIA ELEMENT NORMALIZATION
+===================================================== */
+
+/*
+  Prevent inline gaps
+  Ensure responsiveness
+*/
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* =====================================================
+   4. FORM ELEMENT RESET
+===================================================== */
+
+/*
+  Remove inconsistent browser styles
+  Inherit typography
+*/
+input,
+textarea,
+select,
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+/*
+  Remove default button styles
+*/
+button {
+  cursor: pointer;
+}
+
+/*
+  Prevent textarea resize breakage
+*/
+textarea {
+  resize: vertical;
+}
+
+/* =====================================================
+   5. LINK RESET
+===================================================== */
+
+/*
+  Remove default underline
+  Inherit color (design handled later)
+*/
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* =====================================================
+   6. LIST RESET
+===================================================== */
+
+/*
+  Lists will be styled explicitly
+*/
+ul,
+ol {
+  list-style: none;
+}
+
+/* =====================================================
+   7. TABLE RESET
+===================================================== */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* =====================================================
+   8. HEADING RESET
+===================================================== */
+
+/*
+  Remove browser font scaling
+  Headings styled in base.css
+*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+/* =====================================================
+   9. ACCESSIBILITY SAFETY
+===================================================== */
+
+/*
+  Improve focus visibility for keyboard users
+*/
+:focus-visible {
+  outline: 2px solid rgba(1, 42, 45, 0.5);
+  outline-offset: 2px;
+}
+
+/* =====================================================
+   10. REDUCED MOTION SUPPORT
+===================================================== */
+
+/*
+  Respect OS-level reduced motion preferences
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* =====================================================
+   END OF RESET
+   ⚠ DO NOT ADD DESIGN HERE
+===================================================== */
+
+
+/* =====================================================
+   NexGen AI – DESIGN TOKENS
+   File: 02-variables.css
+   Scope: Global
+   Purpose:
+   - Central source of truth for design values
+   - Enables consistency, scaling, and theming
+===================================================== */
+
+:root {
+
+  /* ===================================================
+     1. BRAND COLORS
+     =================================================== */
+
+  /*
+    Primary brand color
+    Used for:
+    - CTAs
+    - Highlights
+    - Active states
+  */
+  --color-primary-900: #012a2d;
+  --color-primary-700: #012a2d;
+  --color-primary-500: #012a2d;
+  --color-primary-100: #ccfbf1;
+
+  /*
+    Accent / success color
+  */
+  --color-success-600: #16a34a;
+  --color-success-100: #dcfce7;
+
+  /*
+    Info / link color
+  */
+  --color-info-600: #2563eb;
+  --color-info-100: #dbeafe;
+
+  /*
+    Error / danger color
+  */
+  --color-danger-600: #dc2626;
+  --color-danger-100: #fee2e2;
+
+  /* ===================================================
+     2. NEUTRAL COLORS (TEXT / BACKGROUND)
+     =================================================== */
+
+  /*
+    Text colors
+  */
+  --color-text-900: #0f172a; /* headings */
+  --color-text-700: #334155; /* body */
+  --color-text-500: #64748b; /* muted */
+  --color-text-300: #cbd5e1; /* disabled */
+
+  /*
+    Backgrounds
+  */
+  --color-bg-900: #020617;   /* dark sections */
+  --color-bg-700: #0f172a;
+  --color-bg-100: #f8fafc;   /* light sections */
+  --color-bg-50:  #ffffff;
+
+  /*
+    Borders & dividers
+  */
+  --color-border-300: #e5e7eb;
+  --color-border-200: #f1f5f9;
+
+  /* ===================================================
+     3. TYPOGRAPHY SYSTEM
+     =================================================== */
+
+  /*
+    Font families
+  */
+  --font-primary: "Roboto", system-ui, -apple-system, sans-serif;
+  --font-heading: "Montserrat", system-ui, -apple-system, sans-serif;
+
+  /*
+    Font sizes (scale-based)
+  */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-md: 18px;
+  --text-lg: 22px;
+  --text-xl: 28px;
+  --text-2xl: 36px;
+  --text-3xl: 44px;
+  --text-4xl: 56px;
+
+  /*
+    Font weights
+  */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* ===================================================
+     4. SPACING SYSTEM (8px GRID)
+     =================================================== */
+
+  /*
+    Padding / margin scale
+  */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+  --space-11: 80px;
+  --space-12: 100px;
+  --space-13: 120px;
+
+  /* ===================================================
+     5. BORDER RADIUS
+     =================================================== */
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-pill: 999px;
+
+  /* ===================================================
+     6. SHADOW SYSTEM (PREMIUM DEPTH)
+     =================================================== */
+
+  /*
+    Subtle card shadow
+  */
+  --shadow-sm:
+    0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /*
+    Default card shadow
+  */
+  --shadow-md:
+    0 10px 30px rgba(0, 0, 0, 0.08);
+
+  /*
+    Hover / elevated state
+  */
+  --shadow-lg:
+    0 30px 70px rgba(0, 0, 0, 0.12);
+
+  /*
+    Focus / brand glow
+  */
+  --shadow-brand:
+    0 0 0 4px rgba(1, 42, 45, 0.15);
+
+  /* ===================================================
+     7. TRANSITIONS & ANIMATION
+     =================================================== */
+
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.45s ease;
+
+  /* ===================================================
+     8. Z-INDEX SCALE (STRICT ORDER)
+     =================================================== */
+
+  --z-base: 1;
+  --z-header: 100;
+  --z-dropdown: 300;
+  --z-overlay: 600;
+  --z-modal: 900;
+  --z-toast: 1200;
+}
+
+/* =====================================================
+   END OF DESIGN TOKENS
+   All UI must reference variables from this file
+===================================================== */
+
+
+
+/* =====================================================
+   NexGen AI – BASE STYLES
+   File: 03-base.css
+   Depends on: 02-variables.css
+   Purpose:
+   - Global typography
+   - Buttons
+   - Section spacing
+   - Accessibility-safe defaults
+===================================================== */
+
+
+/* =====================================================
+   1. HTML & BODY
+===================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-regular);
+  line-height: 1.65;
+  color: var(--color-text-700);
+  background-color: var(--color-bg-50);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* =====================================================
+   2. HEADINGS SYSTEM
+===================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--color-text-900);
+  font-weight: var(--font-bold);
+  line-height: 1.25;
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--text-4xl);
+  letter-spacing: -0.6px;
+}
+
+h2 {
+  font-size: var(--text-3xl);
+  letter-spacing: -0.4px;
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+h4 {
+  font-size: var(--text-lg);
+}
+
+h5 {
+  font-size: var(--text-md);
+}
+
+h6 {
+  font-size: var(--text-base);
+}
+
+
+/* =====================================================
+   3. PARAGRAPHS & TEXT
+===================================================== */
+
+p {
+  margin: 0;
+  margin-top: var(--space-4);
+  font-size: var(--text-base);
+  color: var(--color-text-700);
+}
+
+p:first-child {
+  margin-top: 0;
+}
+
+small {
+  font-size: var(--text-sm);
+  color: var(--color-text-500);
+}
+
+
+/* =====================================================
+   4. LINKS
+===================================================== */
+
+a {
+  color: var(--color-primary-700);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-900);
+}
+
+
+/* =====================================================
+   5. BUTTON SYSTEM (GLOBAL)
+===================================================== */
+
+button,
+.primary-btn,
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--space-4) var(--space-7);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+
+  border-radius: var(--radius-lg);
+  border: none;
+  cursor: pointer;
+
+  background: var(--color-primary-900);
+  color: #ffffff;
+
+  transition:
+    background var(--transition-base),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Hover */
+button:hover,
+.primary-btn:hover,
+.btn-primary:hover {
+  background: var(--color-primary-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Focus (Accessibility) */
+button:focus-visible,
+.primary-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-brand);
+}
+
+/* Disabled */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* =====================================================
+   6. SECONDARY / OUTLINE BUTTON
+===================================================== */
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary-900);
+  border: 2px solid var(--color-primary-900);
+}
+
+.btn-outline:hover {
+  background: var(--color-primary-100);
+}
+
+
+/* =====================================================
+   7. SECTIONS & LAYOUT RHYTHM
+===================================================== */
+
+section {
+  padding: var(--space-13) var(--space-5);
+}
+
+@media (max-width: 900px) {
+  section {
+    padding: var(--space-11) var(--space-4);
+  }
+}
+
+
+/* =====================================================
+   8. CONTAINERS
+===================================================== */
+
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =====================================================
+   9. LISTS
+===================================================== */
+
+ul {
+  margin: var(--space-5) 0;
+  padding-left: var(--space-6);
+}
+
+ul li {
+  margin-bottom: var(--space-2);
+  color: var(--color-text-700);
+}
+
+
+/* =====================================================
+   10. FORMS (BASIC)
+===================================================== */
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: var(--space-4);
+  font-family: var(--font-primary);
+  font-size: var(--text-sm);
+
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-300);
+  background: #ffffff;
+
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-700);
+  box-shadow: var(--shadow-brand);
+}
+
+textarea {
+  resize: vertical;
+}
+
+
+/* =====================================================
+   11. UTILITY TEXT CLASSES
+===================================================== */
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--color-text-500);
+}
+
+
+/* =====================================================
+   END OF BASE STYLES
+===================================================== */
+
+
+
+
+/* =====================================================
+   NexGen AI – NAVBAR SYSTEM
+   File: 04-navbar.css
+   Depends on:
+   - 02-variables.css
+   - 03-base.css
+===================================================== */
+
+
+/* =====================================================
+   1. NAVBAR SHELL
+===================================================== */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 72px;
+  background: var(--color-bg-50);
+  border-bottom: 1px solid var(--color-border-300);
+  z-index: var(--z-header);
+}
+
+.nav-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  height: 72px;
+  padding: 0 var(--space-6);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* =====================================================
+   2. BRAND / LOGO
+===================================================== */
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: var(--font-bold);
+  color: var(--color-primary-900);
+  white-space: nowrap;
+}
+
+.logo span {
+  color: var(--color-primary-700);
+}
+
+
+/* =====================================================
+   3. DESKTOP NAVIGATION
+===================================================== */
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.nav-link {
+  position: relative;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-700);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--color-primary-900);
+}
+
+/* underline animation */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary-700);
+  transition: width var(--transition-fast);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+
+/* =====================================================
+   4. HAMBURGER BUTTON (PREMIUM – WHITE)
+===================================================== */
+
+.hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  cursor: pointer;
+  z-index: calc(var(--z-header) + 2);
+}
+
+.hamburger span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background: #ffffff;
+  border-radius: 3px;
+  transition: transform 0.35s ease, opacity 0.25s ease;
+}
+
+/* X animation */
+.hamburger.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* =====================================================
+   5. MOBILE NAVIGATION PANEL (SIDE DRAWER)
+===================================================== */
+
+@media (max-width: 900px) {
+
+  /* show hamburger */
+  .hamburger {
+    display: flex;
+  }
+
+  /* side drawer */
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 86%;
+    max-width: 360px;
+    height: 100vh;
+
+    background: #ffffff;
+    box-shadow: -18px 0 60px rgba(1, 42, 45, 0.25);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 28px;
+
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+
+    z-index: var(--z-overlay);
+  }
+
+  /* open state */
+  .nav-menu.nav-active {
+    transform: translateX(0);
+  }
+
+  /* nav links */
+  .nav-link {
+    font-size: 18px;
+    font-weight: 600;
+    color: #012a2d;
+    position: relative;
+    padding: 6px 0;
+  }
+
+  /* subtle premium underline */
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #012a2d;
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+}
