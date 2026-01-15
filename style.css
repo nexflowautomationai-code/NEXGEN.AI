@@ -595,7 +595,7 @@ section {
 
 /* =====================================================
    9. LISTS
-= ==================================================== */
+===================================================== */
 
 ul {
   margin: var(--space-5) 0;
@@ -663,61 +663,81 @@ textarea {
 
 
 /* =====================================================
-   NEXGEN AI – PREMIUM NAVBAR (FINAL)
+   NexGen AI – NAVBAR SYSTEM
+   File: 04-navbar.css
+   Depends on:
+   - 02-variables.css
+   - 03-base.css
+===================================================== */
+
+
+/* =====================================================
+   1. NAVBAR SHELL
 ===================================================== */
 
 .navbar {
   position: sticky;
   top: 0;
+  width: 100%;
   height: 72px;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  z-index: 1000;
+  background: var(--color-bg-50);
+  border-bottom: 1px solid var(--color-border-300);
+  z-index: var(--z-header);
 }
 
 .nav-container {
   max-width: 1300px;
   margin: 0 auto;
   height: 72px;
-  padding: 0 24px;
+  padding: 0 var(--space-6);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* ---------- LOGO ---------- */
+
+/* =====================================================
+   2. BRAND / LOGO
+===================================================== */
 
 .logo {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font-heading);
   font-size: 22px;
-  font-weight: 700;
-  color: #012a2d;
+  font-weight: var(--font-bold);
+  color: var(--color-primary-900);
+  white-space: nowrap;
 }
 
 .logo span {
-  color: #03444a;
+  color: var(--color-primary-700);
 }
 
-/* ---------- DESKTOP MENU ---------- */
+
+/* =====================================================
+   3. DESKTOP NAVIGATION
+===================================================== */
 
 .nav-menu {
   display: flex;
-  gap: 32px;
   align-items: center;
+  gap: var(--space-7);
 }
 
 .nav-link {
-  font-size: 14.5px;
-  font-weight: 500;
-  color: #334155;
   position: relative;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-700);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
 .nav-link:hover {
-  color: #012a2d;
+  color: var(--color-primary-900);
 }
 
+/* underline animation */
 .nav-link::after {
   content: "";
   position: absolute;
@@ -725,32 +745,40 @@ textarea {
   bottom: -8px;
   width: 0;
   height: 2px;
-  background: #012a2d;
-  transition: width 0.25s ease;
+  background: var(--color-primary-700);
+  transition: width var(--transition-fast);
 }
 
 .nav-link:hover::after {
   width: 100%;
 }
 
-/* ---------- HAMBURGER ---------- */
+
+/* =====================================================
+   4. HAMBURGER BUTTON (PREMIUM – WHITE)
+===================================================== */
 
 .hamburger {
   display: none;
   width: 44px;
   height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 5px;
+
   cursor: pointer;
-  z-index: 1400;
+  z-index: calc(var(--z-header) + 2);
 }
 
 .hamburger span {
+  display: block;
   width: 26px;
   height: 3px;
-  background: #012a2d;
+  background: #ffffff;
   border-radius: 3px;
   transition: transform 0.35s ease, opacity 0.25s ease;
 }
@@ -759,80 +787,97 @@ textarea {
 .hamburger.open span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
+
 .hamburger.open span:nth-child(2) {
   opacity: 0;
 }
+
 .hamburger.open span:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
 
-/* ---------- MOBILE MENU ---------- */
+/* =====================================================
+   5. MOBILE NAVIGATION PANEL (SIDE DRAWER)
+===================================================== */
 
 @media (max-width: 900px) {
 
+  /* show hamburger */
   .hamburger {
     display: flex;
   }
 
+  /* side drawer */
   .nav-menu {
     position: fixed;
     top: 0;
     right: 0;
-
-    width: 85%;
+    width: 86%;
     max-width: 360px;
     height: 100vh;
 
     background: #ffffff;
-    box-shadow: -24px 0 60px rgba(1, 42, 45, 0.25);
+    box-shadow: -18px 0 60px rgba(1, 42, 45, 0.25);
 
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 28px;
 
-    transform: translateX(100%);
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .nav-menu.nav-active {
-    transform: translateX(0);
-  }
-}
-
-
-@media (max-width: 900px) {
-  .nav-menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-
-    width: 85%;
-    max-width: 360px;
-    height: 100vh;
-
-    background: #ffffff;
-    box-shadow: -24px 0 60px rgba(1, 42, 45, 0.25);
-
-    display: flex; /* 👈 MUST BE FLEX */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 28px;
 
     transform: translateX(100%);
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 
-    z-index: 1300;
+    z-index: var(--z-overlay);
   }
 
+  /* open state */
   .nav-menu.nav-active {
     transform: translateX(0);
   }
+
+  /* nav links */
+  .nav-link {
+    font-size: 18px;
+    font-weight: 600;
+    color: #012a2d;
+    position: relative;
+    padding: 6px 0;
+  }
+
+  /* subtle premium underline */
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #012a2d;
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
 }
 
 /* =====================================================
+   6. STICKY STATE (JS ADDS CLASS)
+===================================================== */
+
+.navbar-sticky {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+}
+/* =====================================================
    END OF NAVBAR STYLES
+
+
 /* =====================================================
    NexGen AI – HERO SECTION
    File: 05-hero.css
