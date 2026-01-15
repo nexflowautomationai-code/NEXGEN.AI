@@ -799,6 +799,38 @@ textarea {
     transform: translateX(0);
   }
 }
+
+
+@media (max-width: 900px) {
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    width: 85%;
+    max-width: 360px;
+    height: 100vh;
+
+    background: #ffffff;
+    box-shadow: -24px 0 60px rgba(1, 42, 45, 0.25);
+
+    display: flex; /* 👈 MUST BE FLEX */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+
+    z-index: 1300;
+  }
+
+  .nav-menu.nav-active {
+    transform: translateX(0);
+  }
+}
+
 /* =====================================================
    END OF NAVBAR STYLES
 /* =====================================================
