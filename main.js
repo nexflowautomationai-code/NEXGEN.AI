@@ -10,7 +10,7 @@
   /* =====================================================
      DOM REFERENCES
   ===================================================== */
-  const navbar = document.getElementById("navbar");
+  const navbar = document.getElementById("navMenu");
   const regionModal = document.getElementById("nxgRegionModal");
 
   /* =====================================================
