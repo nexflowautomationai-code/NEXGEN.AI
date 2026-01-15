@@ -1,3 +1,4 @@
+
 /* =====================================================
    NexGen AI – Core Application Controller
    Scope: Global (All Pages)
@@ -8,8 +9,7 @@
   "use strict";
 
   /* =====================================================
-     DOM REFERENCES
-     (Fail-safe: all features guard against null)
+     DOM REFERENCES (Fail-safe)
   ===================================================== */
   const navbar = document.getElementById("navbar");
   const hamburger = document.getElementById("hamburger");
@@ -18,7 +18,6 @@
 
   /* =====================================================
      LOCAL STORAGE KEYS
-     (Centralized for maintainability)
   ===================================================== */
   const STORAGE = {
     currency: "nxg_currency",
@@ -28,33 +27,25 @@
   /* =====================================================
      UTILITIES
   ===================================================== */
-
-  /**
-   * Debounce utility
-   * Prevents excessive function calls (scroll / resize)
-   */
   function debounce(fn, delay = 80) {
     let timer;
-    return (...args) => {
+    return function () {
       clearTimeout(timer);
-      timer = setTimeout(() => fn.apply(this, args), delay);
+      timer = setTimeout(fn, delay);
     };
   }
 
-  /**
-   * Mobile breakpoint check
-   */
   function isMobile() {
     return window.innerWidth <= 900;
   }
 
   /* =====================================================
-     NAVBAR: STICKY BEHAVIOR
+     STICKY NAVBAR
   ===================================================== */
   function initStickyNavbar() {
     if (!navbar) return;
 
-    const onScroll = debounce(() => {
+    const onScroll = debounce(function () {
       navbar.classList.toggle("navbar-sticky", window.scrollY > 40);
     }, 40);
 
@@ -63,62 +54,42 @@
 
   /* =====================================================
      MOBILE NAVIGATION
-     - Single initialization guard
-     - Prevents duplicate listeners
   ===================================================== */
-  let mobileMenuInitialized = false;
-
   function initMobileMenu() {
-    if (!hamburger || !navMenu || mobileMenuInitialized) return;
-    mobileMenuInitialized = true;
+    if (!hamburger || !navMenu) return;
 
-    /**
-     * Open mobile menu
-     */
-    const openMenu = () => {
-      navMenu.classList.add("nav-active");
+    function openMenu() {
       hamburger.classList.add("open");
+      navMenu.classList.add("nav-active");
       document.body.style.overflow = "hidden";
-    };
+    }
 
-    /**
-     * Close mobile menu
-     */
-    const closeMenu = () => {
-      navMenu.classList.remove("nav-active");
+    function closeMenu() {
       hamburger.classList.remove("open");
+      navMenu.classList.remove("nav-active");
       document.body.style.overflow = "";
-    };
+    }
 
-    /**
-     * Hamburger toggle
-     */
-    hamburger.addEventListener("click", e => {
-      e.preventDefault();
+    /* Toggle menu */
+    hamburger.addEventListener("click", function (e) {
       e.stopPropagation();
-
       navMenu.classList.contains("nav-active")
         ? closeMenu()
         : openMenu();
     });
 
-    /**
-     * Close menu when clicking navigation links (mobile)
-     */
-    document.querySelectorAll(".nav-link").forEach(link => {
-      link.addEventListener("click", () => {
+    /* Close on nav link click (mobile only) */
+    document.querySelectorAll(".nav-link").forEach(function (link) {
+      link.addEventListener("click", function () {
         if (isMobile()) closeMenu();
       });
     });
 
-    /**
-     * Close menu on outside click
-     */
-    document.addEventListener("click", e => {
-      if (!isMobile()) return;
-      if (!navMenu.classList.contains("nav-active")) return;
-
+    /* Close on outside click */
+    document.addEventListener("click", function (e) {
       if (
+        isMobile() &&
+        navMenu.classList.contains("nav-active") &&
         !navMenu.contains(e.target) &&
         !hamburger.contains(e.target)
       ) {
@@ -126,24 +97,19 @@
       }
     });
 
-    /**
-     * Close menu on ESC key
-     */
-    document.addEventListener("keydown", e => {
+    /* Close on ESC */
+    document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closeMenu();
     });
 
-    /**
-     * Reset menu on desktop resize
-     */
-    window.addEventListener("resize", () => {
+    /* Reset on desktop resize */
+    window.addEventListener("resize", function () {
       if (!isMobile()) closeMenu();
     });
   }
 
   /* =====================================================
      REGION & CURRENCY ENFORCEMENT
-     (Payment compliance & UX safety)
   ===================================================== */
   function enforceRegionSelection() {
     if (!regionModal) return;
@@ -163,10 +129,7 @@
     document.body.style.overflow = "";
   }
 
-  /**
-   * Region selection handler
-   */
-  document.addEventListener("click", e => {
+  document.addEventListener("click", function (e) {
     const btn = e.target.closest(".nxg-region-btn");
     if (!btn) return;
 
@@ -174,21 +137,22 @@
     localStorage.setItem(STORAGE.regionSelected, "true");
 
     closeRegionModal();
-
-    // Reload ensures currency-sensitive pricing refresh
-    setTimeout(() => location.reload(), 150);
+    setTimeout(function () {
+      location.reload();
+    }, 150);
   });
 
   /* =====================================================
      INITIALIZATION
   ===================================================== */
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", function () {
     initStickyNavbar();
     initMobileMenu();
     enforceRegionSelection();
   });
 
 })();
+
 
 
 /* =====================================================
@@ -304,117 +268,3 @@ function closeConsultNotice() {
   localStorage.setItem("consultNoticeSeen", "true");
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.getElementById("navMenu");
-
-  if (!hamburger || !navMenu) {
-    console.warn("Hamburger or navMenu not found");
-    return;
-  }
-
-  function openMenu() {
-    hamburger.classList.add("open");
-    navMenu.classList.add("nav-active");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeMenu() {
-    hamburger.classList.remove("open");
-    navMenu.classList.remove("nav-active");
-    document.body.style.overflow = "";
-  }
-
-  hamburger.addEventListener("click", function (e) {
-    e.stopPropagation();
-
-    if (navMenu.classList.contains("nav-active")) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  });
-
-  // Close when clicking outside
-  document.addEventListener("click", function (e) {
-    if (
-      navMenu.classList.contains("nav-active") &&
-      !navMenu.contains(e.target) &&
-      !hamburger.contains(e.target)
-    ) {
-      closeMenu();
-    }
-  });
-
-  // Close on ESC
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeMenu();
-  });
-
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-
-  const hamburger = document.getElementById("hamburger");
-  const navMenu = document.getElementById("navMenu");
-
-  if (!hamburger || !navMenu) {
-    console.error("Hamburger or navMenu not found");
-    return;
-  }
-
-  function openMenu() {
-    hamburger.classList.add("open");
-    navMenu.classList.add("nav-active");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeMenu() {
-    hamburger.classList.remove("open");
-    navMenu.classList.remove("nav-active");
-    document.body.style.overflow = "";
-  }
-
-  // Toggle on hamburger click
-  hamburger.addEventListener("click", function (e) {
-    e.stopPropagation();
-    navMenu.classList.contains("nav-active")
-      ? closeMenu()
-      : openMenu();
-  });
-
-  // Close when clicking a nav link (mobile)
-  document.querySelectorAll(".nav-link").forEach(function (link) {
-    link.addEventListener("click", function () {
-      if (window.innerWidth <= 900) {
-        closeMenu();
-      }
-    });
-  });
-
-  // Close on outside click
-  document.addEventListener("click", function (e) {
-    if (
-      window.innerWidth <= 900 &&
-      navMenu.classList.contains("nav-active") &&
-      !navMenu.contains(e.target) &&
-      !hamburger.contains(e.target)
-    ) {
-      closeMenu();
-    }
-  });
-
-  // Close on ESC
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeMenu();
-  });
-
-  // Reset when switching to desktop
-  window.addEventListener("resize", function () {
-    if (window.innerWidth > 900) {
-      closeMenu();
-  }
-});
-
-});
