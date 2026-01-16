@@ -808,49 +808,26 @@ custom: {
 
     /* ================= BILLING CTA ================= */
     billingBtn.addEventListener("click", () => {
-      const amount =
-        (state.setupAmount || 0) + (state.managementAmount || 0);
 
-      if (amount <= 0) {
-        alert("Select a valid plan");
-        return;
-      }
+  // Ensure all required selections are made
+  if (!state.automationKey || !state.setupPlan || !state.managementPlan) {
+    alert("Please select automation, setup plan, and management plan");
+    return;
+  }
 
-      const currency = localStorage.getItem("nxg_currency") || "USD";
-      const base = window.location.origin;
+  // Pass selected data to onboarding form
+  const params = new URLSearchParams({
+    automation: state.automationLabel,
+    setup: state.setupPlan,
+    management: state.managementPlan
+  });
 
-      window.location.href =
-        currency === "INR"
-          ? `${base}/payment/razorpay.html?amount=${amount}`
-          : `${base}/payment/stripe.html?amount=${amount}`;
-    });
+  // Redirect to onboarding form (no payment here)
+  window.location.href =
+    "payment-details-form.html?" + params.toString();
+});
 
-    /* ================= PAYPAL FORM ================= */
-    const paypalForm = document.getElementById("paypalForm");
-    if (paypalForm) {
-      paypalForm.addEventListener("submit", () => {
-        const automation = document.getElementById("billAutomation").innerText;
-        const setup = document.getElementById("billSetup").innerText;
-        const total = document.getElementById("billTotal").innerText.replace("$", "");
-
-        // Safety check
-        if (!automation || automation === "—") {
-          alert("Please select an automation before proceeding.");
-          event.preventDefault();
-          return;
-        }
-
-        // Bind PayPal values
-        document.getElementById("ppItemName").value =
-          automation + " | " + setup;
-
-        document.getElementById("ppAmount").value = total;
-
-        document.getElementById("ppCustom").value =
-          automation.toLowerCase().replace(/\s+/g, "_");
-      });
-    }
-
+    
   });
 
 })();

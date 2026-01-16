@@ -283,31 +283,14 @@
 
   <!-- Info Note -->
   <p class="billing-note">
-    Your automation system will be custom-built after payment confirmation.
-    Our team will review your requirements and initiate onboarding.
+     All automation systems are custom-configured after requirement confirmation.
+Once you submit the form, our team will contact you to understand your business needs, integrations, and workflow requirements.
+Payments are collected after consultation and scope approval.
+Standard automation setup timelines are up to 7 business days, depending on project complexity, third-party approvals, and access availability.
   </p>
 
   <!-- ================= PAYPAL CHECKOUT ================= -->
-  <form id="paypalForm"
-        class="billing-action"
-        action="https://www.paypal.com/cgi-bin/webscr"
-        method="post">
-
-    <!-- PayPal Core -->
-    <input type="hidden" name="cmd" value="_xclick">
-    <input type="hidden" name="business" value="YOUR_PAYPAL_BUSINESS_EMAIL">
-    <input type="hidden" name="currency_code" value="USD">
-
-    <!-- Dynamic Fields -->
-    <input type="hidden" name="item_name" id="ppItemName">
-    <input type="hidden" name="amount" id="ppAmount">
-    <input type="hidden" name="custom" id="ppCustom">
-
-    <!-- Redirects -->
-    <input type="hidden" name="return"
-           value="https://yourdomain.com/onboarding-details.html">
-    <input type="hidden" name="cancel_return"
-           value="https://yourdomain.com/pricing.html">
+  
 
     <button type="submit" class="btn-primary billing-btn">
       Secure Payment & Start Automation
@@ -315,17 +298,14 @@
 
   </form>
 
-  <!-- Trust Footer -->
-  <p class="billing-trust">
-    🔒 Secure PayPal checkout • No hidden fees • Professional onboarding
-  </p>
-
-</section>
+ <!-- Trust Footer -->
+<p class="billing-trust">
+  🔒 Secure PayPal Checkout • Transparent Pricing • Professional Onboarding
+</p>
 
 
 <!-- ================= SCRIPTS ================= -->
 <script src="pricing.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 </body>
 </html>
