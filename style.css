@@ -3425,3 +3425,75 @@ section {
   color: #fbbf24;
 }
 
+
+
+
+
+.premium-billing {
+  max-width: 520px;
+  margin: 4rem auto;
+}
+
+.billing-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.billing-header h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.billing-subtext {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.billing-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.billing-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  font-size: 0.95rem;
+}
+
+.billing-label {
+  color: #6b7280;
+}
+
+.billing-value {
+  font-weight: 500;
+}
+
+.billing-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 1rem 0;
+}
+
+.billing-row.total {
+  font-size: 1.05rem;
+}
+
+.billing-total {
+  font-weight: 700;
+}
+
+.billing-paypal {
+  margin-top: 1.5rem;
+}
+
+.billing-trust {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}

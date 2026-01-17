@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <!-- ================= BASIC META ================= -->
   <meta charset="UTF-8">
@@ -8,65 +10,36 @@
   <meta name="description" content="AI Automation Agency providing WhatsApp, CRM, and business workflow automation.">
   <link rel="canonical" href="https://nexflowautomationai-code.github.io/NEXGEN.AI/">
 
-  <!-- ================= FAVICON (ICON ONLY – ALL PAGES) ================= -->
-<link rel="icon" type="image/x-icon" href="/favicon.ico?v=6">
-
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6">
-
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png?v=6">
-<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png?v=6">
-
-<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
-
-<meta name="theme-color" content="#012a2d">
-
-<!-- ================= ORGANIZATION SCHEMA ================= -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "NexGen AI",
-  "url": "https://nexflowautomationai-code.github.io/NEXGEN.AI/",
-  "logo": "https://nexflowautomationai-code.github.io/NEXGEN.AI/favicon-512.png",
-  "sameAs": [
-    "https://www.instagram.com/",
-    "https://www.linkedin.com/"
-  ]
-}
-</script>
+  <!-- ================= FAVICON ================= -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=6">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=6">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=6">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png?v=6">
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png?v=6">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=6">
+  <meta name="theme-color" content="#012a2d">
 
   <!-- ================= STYLES ================= -->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="currency/currency.css">
 </head>
 
-
-
 <body>
 
-<!-- ================================================= -->
-<!-- ================= NAVBAR ======================== -->
-<!-- ================================================= -->
+<!-- ================= NAVBAR ================= -->
 <header class="navbar" id="navbar">
   <div class="nav-container">
+    <div class="logo">NexGen <span>AI</span></div>
 
-    <!-- Logo (LEFT) -->
-    <div class="logo">
-      NexGen <span>AI</span>
-    </div>
-
-    <!-- Navigation (DESKTOP INLINE / MOBILE DROPDOWN) -->
     <nav class="nav-menu" id="navMenu">
-  <a href="index.html#home" class="nav-link">Home</a>
-  <a href="index.html#services" class="nav-link">Services</a>
-  <a href="index.html#process" class="nav-link">Process</a>
-  <a href="index.html#contact" class="nav-link">Contact</a>
-
-  <a href="pricing.html" class="nav-link">Pricing</a>
-  <a href="demo.html" class="nav-link">Demo</a>
-  <a href="about.html" class="nav-link">About</a>
-</nav>
+      <a href="index.html#home" class="nav-link">Home</a>
+      <a href="index.html#services" class="nav-link">Services</a>
+      <a href="index.html#process" class="nav-link">Process</a>
+      <a href="index.html#contact" class="nav-link">Contact</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a href="demo.html" class="nav-link">Demo</a>
+      <a href="about.html" class="nav-link">About</a>
+    </nav>
 
 
     <!-- Hamburger (RIGHT – MOBILE ONLY) -->
@@ -185,6 +158,7 @@
   </div>
 </section>
 
+
 <!-- ================= MONTHLY MANAGEMENT ================= -->
 <section class="management-section" id="management">
 
@@ -252,61 +226,60 @@
   <div class="billing-header">
     <h2>Billing Summary</h2>
     <p class="billing-subtext">
-      Review your selected automation and confirm to securely proceed with payment.
+      Please review your selected automation and proceed with the secure one-time setup payment.
+Monthly management services are activated and billed separately after deployment and your explicit approval.
     </p>
   </div>
 
   <!-- Summary Card -->
   <div class="billing-card">
 
-    <div class="billing-item">
-      <span class="label">Automation Selected</span>
-      <strong id="billAutomation" class="value">—</strong>
+    <div class="billing-row">
+      <span class="billing-label">Automation</span>
+      <strong id="billAutomation" class="billing-value">—</strong>
     </div>
 
-    <div class="billing-item">
-      <span class="label">One-Time Setup</span>
-      <strong id="billSetup" class="value">—</strong>
+    <div class="billing-row">
+      <span class="billing-label">One-Time Setup</span>
+      <strong id="billSetup" class="billing-value">—</strong>
     </div>
 
-    <div class="billing-item">
-      <span class="label">Monthly Management</span>
-      <strong id="billManagement" class="value">—</strong>
+    <div class="billing-row">
+      <span class="billing-label">Monthly Management</span>
+      <strong id="billManagement" class="billing-value">—</strong>
     </div>
 
     <div class="billing-divider"></div>
 
-    <div class="billing-item total">
-      <span class="label">Total Due Today</span>
-      <strong id="billTotal" class="value">$0</strong>
+    <div class="billing-row total">
+      <span class="billing-label">Total Due Today</span>
+      <strong id="billTotal" class="billing-total">$0</strong>
     </div>
 
   </div>
 
-  <!-- Info Note -->
-  <p class="billing-note">
-     All automation systems are custom-configured after requirement confirmation.
-Once you submit the form, our team will contact you to understand your business needs, integrations, and workflow requirements.
-Payments are collected after consultation and scope approval.
-Standard automation setup timelines are up to 7 business days, depending on project complexity, third-party approvals, and access availability.
-  </p>
+  <!-- PayPal -->
+  <div class="billing-paypal">
+    <div id="paypal-button-container"></div>
+  </div>
 
-  <!-- ================= PAYPAL CHECKOUT ================= -->
-  
+  <!-- Trust -->
+  <div class="billing-trust">
+    <span>🔒</span>
+    <span>Secure PayPal Checkout</span>
+    <span>•</span>
+    <span>No Auto-Billing</span>
+    <span>•</span>
+    <span>Cancel Monthly Anytime</span>
+  </div>
 
-    <button type="submit" class="btn-primary billing-btn">
-      Secure Payment & Start Automation
-    </button>
-
-  </form>
-
- <!-- Trust Footer -->
-<p class="billing-trust">
-  🔒 Secure PayPal Checkout • Transparent Pricing • Professional Onboarding
-</p>
+</section>
 
 
-<!-- ================= SCRIPTS ================= -->
+<!-- ================= PAYPAL SDK ================= -->
+<script src="https://www.paypal.com/sdk/js?client-id=AVOsfcdaPaLUdU5R6mr0xOeI9cQBPiYIRXtQ4_7WTWT4gPYFwMEhvkWoRqFhzNHrps6frNGnUHGerQII&currency=USD"></script>
+
+<!-- ================= APP SCRIPT ================= -->
 <script src="pricing.js"></script>
 
 </body>

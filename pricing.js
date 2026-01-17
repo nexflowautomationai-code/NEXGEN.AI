@@ -1,38 +1,13 @@
 /* =====================================================
    NexGen AI – Core Application Controller
-   Scope: Global (All Pages)
-   Environment: Production / SaaS
 ===================================================== */
-
 (function () {
   "use strict";
 
-  /* =====================================================
-     DOM REFERENCES
-     (Fail-safe: all features guard against null)
-  ===================================================== */
   const navbar = document.getElementById("navbar");
   const hamburger = document.getElementById("hamburger");
   const navMenu = document.getElementById("navMenu");
-  const regionModal = document.getElementById("nxgRegionModal");
 
-  /* =====================================================
-     LOCAL STORAGE KEYS
-     (Centralized for maintainability)
-  ===================================================== */
-  const STORAGE = {
-    currency: "nxg_currency",
-    regionSelected: "nxg_region_selected"
-  };
-
-  /* =====================================================
-     UTILITIES
-  ===================================================== */
-
-  /**
-   * Debounce utility
-   * Prevents excessive function calls (scroll / resize)
-   */
   function debounce(fn, delay = 80) {
     let timer;
     return (...args) => {
@@ -41,84 +16,49 @@
     };
   }
 
-  /**
-   * Mobile breakpoint check
-   */
   function isMobile() {
     return window.innerWidth <= 900;
   }
 
-  /* =====================================================
-     NAVBAR: STICKY BEHAVIOR
-  ===================================================== */
   function initStickyNavbar() {
     if (!navbar) return;
-
     const onScroll = debounce(() => {
       navbar.classList.toggle("navbar-sticky", window.scrollY > 40);
     }, 40);
-
     window.addEventListener("scroll", onScroll);
   }
 
-  /* =====================================================
-     MOBILE NAVIGATION
-     - Single initialization guard
-     - Prevents duplicate listeners
-  ===================================================== */
-  let mobileMenuInitialized = false;
-
   function initMobileMenu() {
-    if (!hamburger || !navMenu || mobileMenuInitialized) return;
-    mobileMenuInitialized = true;
+    if (!hamburger || !navMenu) return;
 
-    /**
-     * Open mobile menu
-     */
     const openMenu = () => {
       navMenu.classList.add("nav-active");
       hamburger.classList.add("open");
       document.body.style.overflow = "hidden";
     };
 
-    /**
-     * Close mobile menu
-     */
     const closeMenu = () => {
       navMenu.classList.remove("nav-active");
       hamburger.classList.remove("open");
       document.body.style.overflow = "";
     };
 
-    /**
-     * Hamburger toggle
-     */
-    hamburger.addEventListener("click", e => {
-      e.preventDefault();
-      e.stopPropagation();
-
+    hamburger.addEventListener("click", () => {
       navMenu.classList.contains("nav-active")
         ? closeMenu()
         : openMenu();
     });
 
-    /**
-     * Close menu when clicking navigation links (mobile)
-     */
     document.querySelectorAll(".nav-link").forEach(link => {
       link.addEventListener("click", () => {
         if (isMobile()) closeMenu();
       });
     });
 
-    /**
-     * Close menu on outside click
-     */
     document.addEventListener("click", e => {
-      if (!isMobile()) return;
-      if (!navMenu.classList.contains("nav-active")) return;
-
       if (
+        isMobile() &&
+        navMenu.classList.contains("nav-active") &&
         !navMenu.contains(e.target) &&
         !hamburger.contains(e.target)
       ) {
@@ -126,77 +66,24 @@
       }
     });
 
-    /**
-     * Close menu on ESC key
-     */
     document.addEventListener("keydown", e => {
       if (e.key === "Escape") closeMenu();
     });
 
-    /**
-     * Reset menu on desktop resize
-     */
     window.addEventListener("resize", () => {
       if (!isMobile()) closeMenu();
     });
   }
 
-  /* =====================================================
-     REGION & CURRENCY ENFORCEMENT
-     (Payment compliance & UX safety)
-  ===================================================== */
-  function enforceRegionSelection() {
-    if (!regionModal) return;
-
-    const currency = localStorage.getItem(STORAGE.currency);
-    const selected = localStorage.getItem(STORAGE.regionSelected);
-
-    if (!currency || !selected) {
-      regionModal.classList.remove("nxg-hidden");
-      document.body.style.overflow = "hidden";
-    }
-  }
-
-  function closeRegionModal() {
-    if (!regionModal) return;
-    regionModal.classList.add("nxg-hidden");
-    document.body.style.overflow = "";
-  }
-
-  /**
-   * Region selection handler
-   */
-  document.addEventListener("click", e => {
-    const btn = e.target.closest(".nxg-region-btn");
-    if (!btn) return;
-
-    localStorage.setItem(STORAGE.currency, btn.dataset.currency);
-    localStorage.setItem(STORAGE.regionSelected, "true");
-
-    closeRegionModal();
-
-    // Reload ensures currency-sensitive pricing refresh
-    setTimeout(() => location.reload(), 150);
-  });
-
-  /* =====================================================
-     INITIALIZATION
-  ===================================================== */
   document.addEventListener("DOMContentLoaded", () => {
     initStickyNavbar();
     initMobileMenu();
-    enforceRegionSelection();
   });
-
 })();
 
-
-
-
 /* =====================================================
-   NexGen AI – Pricing Engine (FIXED)
+   NexGen AI – Pricing + Billing + PayPal Engine
 ===================================================== */
-
 (function () {
   "use strict";
 
@@ -205,6 +92,8 @@
     /* ================= DOM ================= */
     const automationSelect = document.getElementById("automationType");
     const pricingCards = document.getElementById("pricingCards");
+    const cards = document.querySelectorAll(".pricing-card");
+    const setupButtons = document.querySelectorAll(".select-setup");
     const managementSection = document.getElementById("management");
 
     const basicPriceEl = document.getElementById("basicPrice");
@@ -215,15 +104,15 @@
     const advancedFeaturesEl = document.getElementById("advancedFeatures");
     const premiumFeaturesEl = document.getElementById("premiumFeatures");
 
+    const billingSection = document.getElementById("billingSection");
+    const paypalContainer = document.getElementById("paypal-button-container");
+
     const billAutomation = document.getElementById("billAutomation");
     const billSetup = document.getElementById("billSetup");
     const billManagement = document.getElementById("billManagement");
     const billTotal = document.getElementById("billTotal");
 
-    const billingSection = document.getElementById("billingSection");
-    const billingBtn = document.querySelector(".billing-btn");
-
-    if (!automationSelect || !billingBtn) return;
+    if (!automationSelect) return;
 
     /* ================= STATE ================= */
     const state = {
@@ -235,9 +124,12 @@
       managementAmount: 0
     };
 
-    /* ================= PRICING DATA ================= */
-const pricing = {
 
+    /* expose state safely */
+    window.__nxgInternalState = state;
+
+    /* ================= PRICING DATA ================= */
+    const pricing = {
   /* =====================================================
      WHATSAPP AUTOMATION
   ===================================================== */
@@ -659,20 +551,19 @@ custom: {
       optimize: 259,
       managed: 499
     };
+/* ================= HELPERS ================= */
+    const format = n => `$${Number(n || 0).toLocaleString()}`;
 
-    /* ================= HELPERS ================= */
-    const format = amt => `$${amt.toLocaleString()}`;
-
-    const renderFeatures = (el, list = []) => {
+    function renderFeatures(el, list = []) {
       el.innerHTML = "";
-      list.forEach(item => {
+      list.forEach(text => {
         const li = document.createElement("li");
-        li.textContent = item;
+        li.textContent = text;
         el.appendChild(li);
       });
-    };
+    }
 
-    const updateBilling = (scroll = false) => {
+    function updateBilling(scroll = false) {
       billAutomation.textContent = state.automationLabel || "—";
       billSetup.textContent = state.setupAmount
         ? format(state.setupAmount)
@@ -680,119 +571,122 @@ custom: {
       billManagement.textContent = state.managementAmount
         ? `${format(state.managementAmount)} / month`
         : "Not selected";
-      billTotal.textContent = format(
-        (state.setupAmount || 0) + (state.managementAmount || 0)
-      );
+      billTotal.textContent = format(state.setupAmount);
 
       billingSection.classList.remove("hidden");
       if (scroll) billingSection.scrollIntoView({ behavior: "smooth" });
-    };
+    }
+
+    function renderPayPalIfReady() {
+      if (
+        !state.automationKey ||
+        !state.setupPlan ||
+        !state.managementPlan ||
+        state.automationKey === "custom"
+      ) return;
+
+      if (paypalContainer.dataset.rendered) return;
+      paypalContainer.dataset.rendered = "true";
+
+      paypal.Buttons({
+        createOrder(_, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              description: state.automationLabel,
+              custom_id: `management:${state.managementPlan}`,
+              amount: {
+                currency_code: "USD",
+                value: state.setupAmount
+              }
+            }]
+          });
+        },
+        onApprove(_, actions) {
+          return actions.order.capture().then(details => {
+            window.location.href =
+              `payment-success.html?orderId=${details.id}`;
+          });
+        }
+      }).render("#paypal-button-container");
+    }
 
     /* ================= AUTOMATION SELECT ================= */
     automationSelect.addEventListener("change", () => {
-  const key = automationSelect.value;
-  if (!pricing[key]) return;
+      const key = automationSelect.value;
+      if (!pricing[key]) return;
 
-  state.automationKey = key;
-  state.automationLabel = pricing[key].label;
-  state.setupPlan = null;
-  state.setupAmount = 0;
+      state.automationKey = key;
+      state.automationLabel = pricing[key].label;
+      state.setupPlan = null;
+      state.setupAmount = 0;
+      state.managementPlan = null;
+      state.managementAmount = 0;
 
-  pricingCards.classList.remove("hidden");
+      paypalContainer.innerHTML = "";
+      delete paypalContainer.dataset.rendered;
 
-  const cards = document.querySelectorAll(".pricing-card");
-  const buttons = document.querySelectorAll(".select-setup");
+      pricingCards.classList.remove("hidden");
 
-  /* ================= CUSTOM AI ================= */
-  if (key === "custom") {
-    pricingCards.classList.add("single-card");
+      /* ===== CUSTOM AI ===== */
+      if (key === "custom") {
+        pricingCards.classList.add("single-card");
 
-    // Show ONLY first card
-    cards.forEach((card, index) => {
-      card.style.display = index === 0 ? "flex" : "none";
-    });
+        cards.forEach((card, index) => {
+          card.style.display = index === 0 ? "flex" : "none";
+        });
 
-    basicPriceEl.textContent = "Custom AI System";
-    renderFeatures(
-      basicFeaturesEl,
-      pricing.custom.setup.basic.features
-    );
+        basicPriceEl.textContent = "Custom AI System";
+        renderFeatures(
+          basicFeaturesEl,
+          pricing.custom.setup.basic.features
+        );
 
-    buttons.forEach(btn => {
-      btn.textContent = "Request Consultation";
-      btn.dataset.setup = "consultation";
-    });
+        setupButtons.forEach(btn => {
+          btn.textContent = "Request Consultation";
+          btn.dataset.setup = "consultation";
+        });
 
-    return; // ⛔ STOP NORMAL FLOW
-  }
-
-  /* ================= NORMAL AUTOMATIONS ================= */
-  pricingCards.classList.remove("single-card");
-
-  cards.forEach(card => (card.style.display = "flex"));
-
-  const data = pricing[key].setup;
-
-  basicPriceEl.textContent = format(data.basic.price);
-  advancedPriceEl.textContent = format(data.advanced.price);
-  premiumPriceEl.textContent = format(data.premium.price);
-
-  renderFeatures(basicFeaturesEl, data.basic.features);
-  renderFeatures(advancedFeaturesEl, data.advanced.features);
-  renderFeatures(premiumFeaturesEl, data.premium.features);
-
-  buttons.forEach(btn => {
-    btn.textContent = "Select Setup Plan";
-  });
-});
-
-
-    /* ================= SETUP PLAN ================= */
-    document.querySelectorAll(".select-setup").forEach(btn => {
-  btn.addEventListener("click", () => {
-
-    if (!state.automationKey) {
-      alert("Please select an automation first");
-      return;
-    }
-
-    /* ===== CUSTOM AI → CONSULTATION ===== */
-    if (state.automationKey === "custom") {
-
-      // If already on index.html → scroll
-      if (window.location.pathname.includes("index.html") || window.location.pathname === "/") {
-        const consultation = document.getElementById("consultation");
-        if (consultation) {
-          consultation.scrollIntoView({ behavior: "smooth" });
-        }
-      } 
-      // If on pricing.html → redirect
-      else {
-        window.location.href = "index.html#consultation";
+        return;
       }
 
-      return;
-    }
+      /* ===== NORMAL AUTOMATIONS ===== */
+      pricingCards.classList.remove("single-card");
+      cards.forEach(card => (card.style.display = "flex"));
 
-    /* ===== NORMAL SETUP FLOW ===== */
-    const setupKey = btn.dataset.setup;
-    const setupData = pricing[state.automationKey]?.setup?.[setupKey];
+      setupButtons.forEach(btn => {
+        btn.textContent = "Select Setup Plan";
+      });
 
-    if (!setupData || typeof setupData.price !== "number") {
-      alert("Invalid setup plan");
-      return;
-    }
+      const data = pricing[key].setup;
 
-    state.setupPlan = setupKey;
-    state.setupAmount = setupData.price;
+      basicPriceEl.textContent = format(data.basic.price);
+      advancedPriceEl.textContent = format(data.advanced.price);
+      premiumPriceEl.textContent = format(data.premium.price);
 
-    updateBilling(false);
-    managementSection?.scrollIntoView({ behavior: "smooth" });
-  });
-});
+      renderFeatures(basicFeaturesEl, data.basic.features);
+      renderFeatures(advancedFeaturesEl, data.advanced.features);
+      renderFeatures(premiumFeaturesEl, data.premium.features);
+    });
 
+    /* ================= SETUP PLAN ================= */
+    setupButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (state.automationKey === "custom") {
+          window.location.href = "index.html#consultation";
+          return;
+        }
 
+        const key = btn.dataset.setup;
+        const setupData = pricing[state.automationKey]?.setup?.[key];
+        if (!setupData) return;
 
+        state.setupPlan = key;
+        state.setupAmount = setupData.price;
+
+        updateBilling(false);
+        managementSection.scrollIntoView({ behavior: "smooth" });
+      });
+    });
 
     /* ================= MANAGEMENT PLAN ================= */
     document.querySelectorAll(".management-card button").forEach(btn => {
@@ -802,33 +696,11 @@ custom: {
 
         state.managementPlan = plan;
         state.managementAmount = managementPlans[plan];
+
         updateBilling(true);
+        renderPayPalIfReady();
       });
     });
 
-    /* ================= BILLING CTA ================= */
-    billingBtn.addEventListener("click", () => {
-
-  // Ensure all required selections are made
-  if (!state.automationKey || !state.setupPlan || !state.managementPlan) {
-    alert("Please select automation, setup plan, and management plan");
-    return;
-  }
-
-  // Pass selected data to onboarding form
-  const params = new URLSearchParams({
-    automation: state.automationLabel,
-    setup: state.setupPlan,
-    management: state.managementPlan
   });
-
-  // Redirect to onboarding form (no payment here)
-  window.location.href =
-    "payment-details-form.html?" + params.toString();
-});
-
-    
-  });
-
 })();
-
