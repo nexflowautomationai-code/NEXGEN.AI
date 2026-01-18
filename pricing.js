@@ -552,155 +552,173 @@ custom: {
       managed: 499
     };
 /* ================= HELPERS ================= */
-    const format = n => `$${Number(n || 0).toLocaleString()}`;
+const format = n => `$${Number(n || 0).toLocaleString()}`;
 
-    function renderFeatures(el, list = []) {
-      el.innerHTML = "";
-      list.forEach(text => {
-        const li = document.createElement("li");
-        li.textContent = text;
-        el.appendChild(li);
-      });
-    }
-
-    function updateBilling(scroll = false) {
-      billAutomation.textContent = state.automationLabel || "—";
-      billSetup.textContent = state.setupAmount
-        ? format(state.setupAmount)
-        : "Not selected";
-      billManagement.textContent = state.managementAmount
-        ? `${format(state.managementAmount)} / month`
-        : "Not selected";
-      billTotal.textContent = format(state.setupAmount);
-
-      billingSection.classList.remove("hidden");
-      if (scroll) billingSection.scrollIntoView({ behavior: "smooth" });
-    }
-
-    function renderPayPalIfReady() {
-      if (
-        !state.automationKey ||
-        !state.setupPlan ||
-        !state.managementPlan ||
-        state.automationKey === "custom"
-      ) return;
-
-      if (paypalContainer.dataset.rendered) return;
-      paypalContainer.dataset.rendered = "true";
-
-      paypal.Buttons({
-        createOrder(_, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              description: state.automationLabel,
-              custom_id: `management:${state.managementPlan}`,
-              amount: {
-                currency_code: "USD",
-                value: state.setupAmount
-              }
-            }]
-          });
-        },
-        onApprove(_, actions) {
-          return actions.order.capture().then(details => {
-            window.location.href =
-              `payment-success.html?orderId=${details.id}`;
-          });
-        }
-      }).render("#paypal-button-container");
-    }
-
-    /* ================= AUTOMATION SELECT ================= */
-    automationSelect.addEventListener("change", () => {
-      const key = automationSelect.value;
-      if (!pricing[key]) return;
-
-      state.automationKey = key;
-      state.automationLabel = pricing[key].label;
-      state.setupPlan = null;
-      state.setupAmount = 0;
-      state.managementPlan = null;
-      state.managementAmount = 0;
-
-      paypalContainer.innerHTML = "";
-      delete paypalContainer.dataset.rendered;
-
-      pricingCards.classList.remove("hidden");
-
-      /* ===== CUSTOM AI ===== */
-      if (key === "custom") {
-        pricingCards.classList.add("single-card");
-
-        cards.forEach((card, index) => {
-          card.style.display = index === 0 ? "flex" : "none";
-        });
-
-        basicPriceEl.textContent = "Custom AI System";
-        renderFeatures(
-          basicFeaturesEl,
-          pricing.custom.setup.basic.features
-        );
-
-        setupButtons.forEach(btn => {
-          btn.textContent = "Request Consultation";
-          btn.dataset.setup = "consultation";
-        });
-
-        return;
-      }
-
-      /* ===== NORMAL AUTOMATIONS ===== */
-      pricingCards.classList.remove("single-card");
-      cards.forEach(card => (card.style.display = "flex"));
-
-      setupButtons.forEach(btn => {
-        btn.textContent = "Select Setup Plan";
-      });
-
-      const data = pricing[key].setup;
-
-      basicPriceEl.textContent = format(data.basic.price);
-      advancedPriceEl.textContent = format(data.advanced.price);
-      premiumPriceEl.textContent = format(data.premium.price);
-
-      renderFeatures(basicFeaturesEl, data.basic.features);
-      renderFeatures(advancedFeaturesEl, data.advanced.features);
-      renderFeatures(premiumFeaturesEl, data.premium.features);
-    });
-
-    /* ================= SETUP PLAN ================= */
-    setupButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (state.automationKey === "custom") {
-          window.location.href = "index.html#consultation";
-          return;
-        }
-
-        const key = btn.dataset.setup;
-        const setupData = pricing[state.automationKey]?.setup?.[key];
-        if (!setupData) return;
-
-        state.setupPlan = key;
-        state.setupAmount = setupData.price;
-
-        updateBilling(false);
-        managementSection.scrollIntoView({ behavior: "smooth" });
-      });
-    });
-
-    /* ================= MANAGEMENT PLAN ================= */
-    document.querySelectorAll(".management-card button").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const plan = btn.dataset.plan;
-        if (!managementPlans[plan]) return;
-
-        state.managementPlan = plan;
-        state.managementAmount = managementPlans[plan];
-
-        updateBilling(true);
-        renderPayPalIfReady();
-      });
-    });
-
+function renderFeatures(el, list = []) {
+  el.innerHTML = "";
+  list.forEach(text => {
+    const li = document.createElement("li");
+    li.textContent = text;
+    el.appendChild(li);
   });
+}
+
+/* ================= BILLING UPDATE ================= */
+function updateBilling(scroll = false) {
+  billAutomation.textContent = state.automationLabel || "—";
+
+  // Setup is FREE once management is selected
+  billSetup.textContent = state.managementPlan ? "FREE" : "Not selected";
+
+  billManagement.textContent = state.managementAmount
+    ? `${format(state.managementAmount)} / month`
+    : "Not selected";
+
+  // ✅ TOTAL = MANAGEMENT PRICE (NOT setup)
+  billTotal.textContent = state.managementAmount
+    ? format(state.managementAmount)
+    : format(0);
+
+  billingSection.classList.remove("hidden");
+  if (scroll) billingSection.scrollIntoView({ behavior: "smooth" });
+}
+
+/* ================= PAYPAL RENDER ================= */
+function renderPayPalIfReady() {
+  if (
+    !state.automationKey ||
+    !state.setupPlan ||
+    !state.managementPlan ||
+    state.automationKey === "custom"
+  ) return;
+
+  if (paypalContainer.dataset.rendered) return;
+  paypalContainer.dataset.rendered = "true";
+
+  paypal.Buttons({
+    createOrder(_, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          description: state.automationLabel,
+          custom_id: `management:${state.managementPlan}`,
+          amount: {
+            currency_code: "USD",
+            value: state.managementAmount // ✅ charge management only
+          }
+        }]
+      });
+    },
+    onApprove(_, actions) {
+      return actions.order.capture().then(details => {
+        window.location.href =
+          `payment-success.html?orderId=${details.id}`;
+      });
+    }
+  }).render("#paypal-button-container");
+}
+
+/* ================= AUTOMATION SELECT ================= */
+automationSelect.addEventListener("change", () => {
+  const key = automationSelect.value;
+  if (!pricing[key]) return;
+
+  state.automationKey = key;
+  state.automationLabel = pricing[key].label;
+  state.setupPlan = null;
+  state.setupAmount = 0;
+  state.managementPlan = null;
+  state.managementAmount = 0;
+
+  paypalContainer.innerHTML = "";
+  delete paypalContainer.dataset.rendered;
+
+  pricingCards.classList.remove("hidden");
+
+  /* ===== CUSTOM AI ===== */
+  if (key === "custom") {
+    pricingCards.classList.add("single-card");
+
+    cards.forEach((card, index) => {
+      card.style.display = index === 0 ? "flex" : "none";
+    });
+
+    basicPriceEl.textContent = "Custom AI System";
+    renderFeatures(
+      basicFeaturesEl,
+      pricing.custom.setup.basic.features
+    );
+
+    setupButtons.forEach(btn => {
+      btn.textContent = "Request Consultation";
+      btn.dataset.setup = "consultation";
+    });
+
+    return;
+  }
+
+  /* ===== NORMAL AUTOMATIONS ===== */
+  pricingCards.classList.remove("single-card");
+  cards.forEach(card => (card.style.display = "flex"));
+
+  setupButtons.forEach(btn => {
+    btn.textContent = "Select Setup Plan";
+  });
+
+  const data = pricing[key].setup;
+
+  basicPriceEl.textContent = format(data.basic.price);
+  advancedPriceEl.textContent = format(data.advanced.price);
+  premiumPriceEl.textContent = format(data.premium.price);
+
+  renderFeatures(basicFeaturesEl, data.basic.features);
+  renderFeatures(advancedFeaturesEl, data.advanced.features);
+  renderFeatures(premiumFeaturesEl, data.premium.features);
+});
+
+/* ================= SETUP PLAN (SCOPE ONLY) ================= */
+setupButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    if (state.automationKey === "custom") {
+      window.location.href = "index.html#consultation";
+      return;
+    }
+
+    const key = btn.dataset.setup;
+    const setupData = pricing[state.automationKey]?.setup?.[key];
+    if (!setupData) return;
+
+    state.setupPlan = key;
+
+    // ⚠ Setup price NOT charged — only used for scope reference
+    state.setupAmount = 0;
+
+    updateBilling(false);
+    managementSection.scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+/* ================= MANAGEMENT PLAN ================= */
+document.querySelectorAll(".management-card button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const plan = btn.dataset.plan;
+
+    // ❌ Monitor blocked
+    if (plan === "monitor") {
+      alert("Monitor plan is not available. Please select Optimize or Fully Managed.");
+      return;
+    }
+
+    if (!managementPlans[plan]) return;
+
+    state.managementPlan = plan;
+    state.managementAmount = managementPlans[plan];
+
+    // Setup remains FREE
+    state.setupAmount = 0;
+
+    updateBilling(true);
+    renderPayPalIfReady();
+  });
+});
+}); 
 })();
